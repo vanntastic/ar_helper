@@ -13,12 +13,18 @@ module ArHelper
      # Model.to_params :name_of_params_hash # => :name_of_params_hash (defaults to :params)
      #         to override the params hash, just pass a hash list of attributes :
      #         Model.to_params.merge(:my_options)
-     def to_params(params_name="params")
+     # You can remove attributes from assignment by passing them in the :remove option
+     # as an array
+     # - User.to_params(:user, :remove => [:salt]) # => removes the salt attribute 
+     #                                                  from assignment
+     def to_params(params_name="params", options={})
+       cols_to_remove = [:id, :created_at, :updated_at]
+       options[:remove] = options[:remove].nil? ? cols_to_remove : cols_to_remove << options[:remove]
        @@params_var = params_name.to_sym
        # attributes = self.columns.map {|c| c.name.to_sym}
        p_hsh = {}
        self.columns.map {|a| p_hsh[a.name.to_sym]=generate_val(a)}
-       p_hsh.delete :id
+       options[:remove].flatten.each {|c| p_hsh.delete c}
        params = {@@params_var => p_hsh}  
 
        params.instance_eval do

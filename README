@@ -130,6 +130,15 @@ an action request:
     # you can create dummy data like:
     User.create User.to_params[:params]
 
+Removing attributes
+==
+If you need to remove attributes that you do not want to have automatically 
+generated, you can simply pass the :remove arg with an array of attributes to
+remove.
+
+EX: 
+  User.to_params(:user, :remove => :salt) # => returns user params hash without salt attribute generated
+
 == Model#search
 
 Model#search searches a model using the LIKE operator.

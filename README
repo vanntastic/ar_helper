@@ -30,7 +30,7 @@ USAGE
 all [name_of_model], options={}
 
 - all(:users) # => User.find(:all)
-- all(:users, :condtions => "last_name = 'johnson')
+- all(:users, :conditions => "last_name = 'johnson')
   # => User.find(:all, :conditions => "last_name = 'johnson'")
 
 first [name_of_model], options={}

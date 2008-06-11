@@ -252,7 +252,7 @@ module ArHelper
         qry = eval(model.to_s.singularize.camelize)
         return qry.find(type, options)
       elsif model.is_a? String
-        return eval(model).find(type, options)
+        return eval(model.singularize.camelize).find(type, options)
       end
     end
   end

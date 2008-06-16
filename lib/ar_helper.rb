@@ -18,7 +18,7 @@ module ArHelper
      # - User.to_params(:user, :remove => [:salt]) # => removes the salt attribute 
      #                                                  from assignment
      def to_params(params_name="params", options={})
-       cols_to_remove = [:id, :created_at, :updated_at]
+       cols_to_remove = [:id, :created_at, :updated_at, :created_on, :updated_on]
        options[:remove] = options[:remove].nil? ? cols_to_remove : cols_to_remove << options[:remove]
        @@params_var = params_name.to_sym
        # attributes = self.columns.map {|c| c.name.to_sym}
@@ -246,7 +246,7 @@ module ArHelper
       
       qry = modelize(model, :all, options)
     end
-    
+
     def modelize(model, type, options)
       if model.is_a? Symbol
         qry = eval(model.to_s.singularize.camelize)

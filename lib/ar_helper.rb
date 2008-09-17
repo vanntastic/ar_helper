@@ -21,19 +21,23 @@ module ArHelper
        cols_to_remove = [:id, :created_at, :updated_at, :created_on, :updated_on]
        options[:remove] = options[:remove].nil? ? cols_to_remove : cols_to_remove << options[:remove]
        @@params_var = params_name.to_sym
-       # attributes = self.columns.map {|c| c.name.to_sym}
        p_hsh = {}
        self.columns.map {|a| p_hsh[a.name.to_sym]=generate_val(a)}
        options[:remove].flatten.each {|c| p_hsh.delete c}
        params = {@@params_var => p_hsh}  
 
        params.instance_eval do
-         #overrides Hash#merge method by merging just the sub hash and not the main one
+         #overrides Hash#merge method by merging just the sub hash and 
+         # not the main one
          def merge(options={})
            self[@@params_var].update(options)
            return self
          end
+         
+         # alias for self[:params]
+         def values; return self[@@params_var]; end
        end
+       
        return params
      end  
      
@@ -78,29 +82,40 @@ module ArHelper
      end
      
      # search columns using sql LIKE operator with % wildcard character
-     # USAGE : Model.search criteria, column_names, conditions # => defaults to all columns 
-     #         minus date columns
+     # USAGE : Model.search criteria, options={}
+     # OPTIONS :
+     # - :columns => A comma delimited list of columns that you want to search through
+     # - any other valid find option should work..
      # TODO : add error checking
      # TODO : add tests 
-     def search(criteria, columns=self.column_names,conditions=nil)
+     def search(criteria, options={})
+       options[:columns] ||= self.column_names
+       options[:conditions] ||= nil
+       
        @@klass = self
+       
        # refining the columns param
-       columns = self.column_names if columns == :all
-       # columns = [columns] if columns.is_a? String
-       columns = columns.split(",") if columns.is_a? String
+       options[:columns] = self.column_names if options[:columns] == :all
+       options[:columns] = columns.split(",") if columns.is_a? String
        keys_to_remove = ["created_on","created_at","updated_on","updated_at","id"]
-       keys_to_remove.each {|key| columns.delete key}
+       keys_to_remove.each {|key| options[:columns].delete key}
        sql = ""
-       #allows you to pass columns as String instead of explicitly wrapping it into an array
-       columns.each do |column|
+       
+       # allows you to pass columns as String instead of explicitly wrapping it 
+       # into an array
+       options[:columns].each do |column|
         sql << "#{column} LIKE ?"
-        sql << " OR " unless column == columns.last
+        sql << " OR " unless column == options[:columns].last
        end
+       
        # concatenate extra conditions if one was passed
-       sql << build_sql(conditions) unless conditions.nil?
+       sql << build_sql(options[:conditions]) unless options[:conditions].nil?
        sql = [sql]
-       criterias = ["%#{criteria}%"]*columns.length
-       search_results = find :all, :conditions => sql.concat(criterias)
+       
+       criterias = ["%#{criteria}%"]*options[:columns].length
+       options.delete :columns
+       options.update(:conditions => sql.concat(criterias))
+       search_results = find :all, options
        
        search_results.instance_eval do
          # attaches all has_many associations to the search results 

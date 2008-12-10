@@ -44,8 +44,7 @@ describe "Ar Helper" do
   end
   
   it "should pass a relationship and extend methods" do
-    @new_person = Person.create(Person.to_params[:params])
-    @new_person.pencils.create(Pencil.to_params(:params, :remove => :person_id)[:params])
+    create_people_and_pencils
     recent_pencils = @new_person.pencils.find(:all, :order => "created_at", :limit => 5)
     recent_pencils.should.equal recent("@new_person.pencils")
   end
@@ -58,8 +57,23 @@ describe "Ar Helper" do
     duplicates.should.equal Person.duplicates_on(col)                                 
   end
   
+  it "should pass an array to find and return results" do
+    create_people_and_pencils
+    @all_people = Person.find(:all)
+    recent(@all_people).should.equal @all_people[0..5]
+  end
+  
+  it "should return nil if object is nil" do
+    @all_people = Person.find(:all) # => there is no people 
+    recent(@all_people).should.be.blank?
+  end
+  
   teardown do
     drop_models
   end
   
+  def create_people_and_pencils
+    @new_person = Person.create(Person.to_params[:params])
+    @new_person.pencils.create(Pencil.to_params(:params, :remove => :person_id)[:params])
+  end
 end

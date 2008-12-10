@@ -248,8 +248,12 @@ module ArHelper
     # a quick way to get the last five records in a model
     # USAGE : recent :users # => User.find(:all, :order => "created_by DESC", :limit => 5)
     # you can also use associations if you pass a string:
-    # EX : recent 'current_user.posts' 
-    # => current_user.posts.find(:all, :order => "created_at DESC", :limit => 5)
+    # EX : 
+    # recent 'current_user.posts' 
+    #     => current_user.posts.find(:all, :order => "created_at DESC", :limit => 5)
+    # you can also pass instance variables if they're from AR
+    #     recent @users # => returns the first 5 (by default) elems in the array
+    # 
     def recent(model, options={})
       options[:order] = "created_at DESC"
       options[:limit] = 5
@@ -263,10 +267,14 @@ module ArHelper
         return qry.find(type, options)
       elsif model.is_a? String
         return eval(model).find(type, options)
+      elsif model.is_a? Array
+        return model[0..options[:limit]]
       end
       
     # in case this model doesn't contain created_at or updated_at
     rescue ActiveRecord::StatementInvalid
+      return nil
+    rescue NoMethodError
       return nil
     end
     

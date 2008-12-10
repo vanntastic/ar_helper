@@ -87,8 +87,7 @@ module ArHelper
      # OPTIONS :
      # - :columns => A comma delimited list of columns that you want to search through
      # - any other valid find option should work..
-     # TODO : add error checking
-     # TODO : add tests 
+     # TODO : remove this for deprecation and use a different type of search instead...
      def search(criteria, options={})
        options[:columns] ||= self.column_names
        options[:conditions] ||= nil

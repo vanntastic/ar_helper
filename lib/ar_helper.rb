@@ -216,8 +216,6 @@ module ArHelper
   end
   
   module Sugar
-    # TODO : make sure that these methods work with or without created_at... 
-    
     # == ArHelper::Sugar
     # it's an quick abstraction layer that allows you to call things in
     # a more grammatically correct format

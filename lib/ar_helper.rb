@@ -216,7 +216,6 @@ module ArHelper
   end
   
   module Sugar
-    # TODO : write tests for these methods 
     # TODO : make sure that these methods work with or without created_at... 
     
     # == ArHelper::Sugar
@@ -232,7 +231,6 @@ module ArHelper
     
     # a nice way to call Model#find :first
     # instead of User.find(:first) do first(:user)
-    # TODO : add in an option for passing in a number for the limit
     def first(model, options={})
       options[:order] = "created_at DESC"
       options[:limit] = 1
@@ -242,7 +240,6 @@ module ArHelper
     
     # a nice way to get the last record 
     # instead of User.find(:all, :order => "created_at ASC", :limit => 5)
-    # TODO : add in an option for passing in a number for the limit
     def last(model, options={})
       options[:order] = "created_at ASC"
       options[:limit] = 1
@@ -270,7 +267,12 @@ module ArHelper
       elsif model.is_a? String
         return eval(model.singularize.camelize).find(type, options)
       end
+      
+    # in case this model doesn't contain created_at or updated_at
+    rescue ActiveRecord::StatementInvalid
+      return nil
     end
+    
   end
   
 end

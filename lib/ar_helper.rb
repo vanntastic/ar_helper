@@ -1,4 +1,5 @@
 # DEPENDS on map_by_method # => sudo gem install map_by_method
+require 'rubygems'
 require 'map_by_method'
 
 module ArHelper

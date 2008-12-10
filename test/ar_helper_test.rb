@@ -43,6 +43,13 @@ describe "Ar Helper" do
     first(:dummy).should.be.nil
   end
   
+  it "should pass a relationship and extend methods" do
+    @new_person = Person.create(Person.to_params[:params])
+    @new_person.pencils.create(Pencil.to_params(:params, :remove => :person_id)[:params])
+    recent_pencils = @new_person.pencils.find(:all, :order => "created_at", :limit => 5)
+    recent_pencils.should.equal recent("@new_person.pencils")
+  end
+  
   it "should have duplicates for a person" do
     col = "name"
     duplicates = Person.find_by_sql "SELECT #{col}, COUNT(#{col}) AS 

@@ -265,7 +265,7 @@ module ArHelper
         qry = eval(model.to_s.singularize.camelize)
         return qry.find(type, options)
       elsif model.is_a? String
-        return eval(model.singularize.camelize).find(type, options)
+        return eval(model).find(type, options)
       end
       
     # in case this model doesn't contain created_at or updated_at

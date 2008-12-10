@@ -15,13 +15,19 @@ def create_schema
   ActiveRecord::Base.logger
   ActiveRecord::Schema.define :version => 1 do
      create_table "people", :force => true do |t|
-       t.column "name",  :text
-       t.column "email", :text
+       t.column :name,  :text
+       t.column :email, :text
        t.timestamps
      end
      
      create_table "dummies", :force => true do |t|
-       t.column :nothing_special, :string
+       t.column :name, :string
+     end
+     
+     create_table "pencils", :force => true do |t|
+       t.column :brand, :string
+       t.column :person_id, :integer
+       t.timestamps
      end
   end
   
@@ -37,5 +43,14 @@ def load_fixtures
 end
 
 # mock models for testing
-class Person < ActiveRecord::Base; end
+class Person < ActiveRecord::Base
+  has_many :pencils, :dependent => :destroy
+  
+end
+
+class Pencil < ActiveRecord::Base
+  belongs_to :person
+  
+end
+
 class Dummy < ActiveRecord::Base; end

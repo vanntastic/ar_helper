@@ -255,8 +255,8 @@ module ArHelper
     #     recent @users # => returns the first 5 (by default) elems in the array
     # 
     def recent(model, options={})
-      options[:order] = "created_at DESC"
-      options[:limit] = 5
+      options[:order] ||= "created_at DESC"
+      options[:limit] ||= 5
       
       qry = modelize(model, :all, options)
     end

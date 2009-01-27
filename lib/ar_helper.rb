@@ -18,7 +18,9 @@ module ArHelper
      # as an array
      # - User.to_params(:user, :remove => [:salt]) # => removes the salt attribute 
      #                                                  from assignment
-     def to_params(params_name="params", options={})
+     # - The preferred way to do that now is by using the #remove method :
+     # - User.to_params.remove :salt # => removes the salt attribute from assignment...
+     def to_params(params_name=:params, options={})
        cols_to_remove = [:id, :created_at, :updated_at, :created_on, :updated_on]
        options[:remove] = options[:remove].nil? ? cols_to_remove : cols_to_remove << options[:remove]
        @@params_var = params_name.to_sym
@@ -35,8 +37,17 @@ module ArHelper
            return self
          end
          
+         # removes attrs from params hash
+         def remove(*vals)
+          vals = [vals] unless vals.is_a?(Array)
+          vals.each { |val| self[@@params_var].delete val }
+          return self
+         end
+         
          # alias for self[:params]
          def values; return self[@@params_var]; end
+         
+         alias :hash :values
        end
        
        return params

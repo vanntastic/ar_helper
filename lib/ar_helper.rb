@@ -99,72 +99,72 @@ module ArHelper
      # - :columns => A comma delimited list of columns that you want to search through
      # - any other valid find option should work..
      # TODO : remove this for deprecation and use a different type of search instead...
-     def search(criteria, options={})
-       options[:columns] ||= self.column_names
-       options[:conditions] ||= nil
-       
-       @@klass = self
-       
-       # refining the columns param
-       options[:columns] = self.column_names if options[:columns] == :all
-       options[:columns] = columns.split(",") if columns.is_a? String
-       keys_to_remove = ["created_on","created_at","updated_on","updated_at","id"]
-       keys_to_remove.each {|key| options[:columns].delete key}
-       sql = ""
-       
-       # allows you to pass columns as String instead of explicitly wrapping it 
-       # into an array
-       options[:columns].each do |column|
-        sql << "#{column} LIKE ?"
-        sql << " OR " unless column == options[:columns].last
-       end
-       
-       # concatenate extra conditions if one was passed
-       sql << build_sql(options[:conditions]) unless options[:conditions].nil?
-       sql = [sql]
-       
-       criterias = ["%#{criteria}%"]*options[:columns].length
-       options.delete :columns
-       options.update(:conditions => sql.concat(criterias))
-       search_results = find :all, options
-       
-       search_results.instance_eval do
-         # attaches all has_many associations to the search results 
-         # in the form of hashes
-         # Assume the following model
-         # User#has_many comments
-         #  1. run the search 
-         # =>   u = User.search "something"
-         #  2. Get all the comments for this user
-         # =>   u.find_many[:comments]
-         def find_many
-          hm = {}
-          @@klass.hm_associations.each do |assoc|
-            results = []
-            self.each {|x| results << x.send(assoc)}
-            hm[assoc] = results.flatten
-          end
-          hm
-         end
-         
-         # attach has_many associations to the search  
-         # so now you can do :
-         # u = User.search "something"
-         # now you have u.comments (assuming you have has_many :comments)
-         @@klass.hm_associations.each do |assoc|
-           eval <<-END
-             def #{assoc}
-               class << self ; attr_reader :#{assoc} ; end
-               @#{assoc} = find_many[:#{assoc}]
-             end
-           END
-         end
-         
-         # TODO : add in the belongs_to association in the hash 
-       end
-       
-       search_results
-     end
+     # def search(criteria, options={})
+     #   options[:columns] ||= self.column_names
+     #   options[:conditions] ||= nil
+     #   
+     #   @@klass = self
+     #   
+     #   # refining the columns param
+     #   options[:columns] = self.column_names if options[:columns] == :all
+     #   options[:columns] = columns.split(",") if columns.is_a? String
+     #   keys_to_remove = ["created_on","created_at","updated_on","updated_at","id"]
+     #   keys_to_remove.each {|key| options[:columns].delete key}
+     #   sql = ""
+     #   
+     #   # allows you to pass columns as String instead of explicitly wrapping it 
+     #   # into an array
+     #   options[:columns].each do |column|
+     #    sql << "#{column} LIKE ?"
+     #    sql << " OR " unless column == options[:columns].last
+     #   end
+     #   
+     #   # concatenate extra conditions if one was passed
+     #   sql << build_sql(options[:conditions]) unless options[:conditions].nil?
+     #   sql = [sql]
+     #   
+     #   criterias = ["%#{criteria}%"]*options[:columns].length
+     #   options.delete :columns
+     #   options.update(:conditions => sql.concat(criterias))
+     #   search_results = find :all, options
+     #   
+     #   search_results.instance_eval do
+     #     # attaches all has_many associations to the search results 
+     #     # in the form of hashes
+     #     # Assume the following model
+     #     # User#has_many comments
+     #     #  1. run the search 
+     #     # =>   u = User.search "something"
+     #     #  2. Get all the comments for this user
+     #     # =>   u.find_many[:comments]
+     #     def find_many
+     #      hm = {}
+     #      @@klass.hm_associations.each do |assoc|
+     #        results = []
+     #        self.each {|x| results << x.send(assoc)}
+     #        hm[assoc] = results.flatten
+     #      end
+     #      hm
+     #     end
+     #     
+     #     # attach has_many associations to the search  
+     #     # so now you can do :
+     #     # u = User.search "something"
+     #     # now you have u.comments (assuming you have has_many :comments)
+     #     @@klass.hm_associations.each do |assoc|
+     #       eval <<-END
+     #         def #{assoc}
+     #           class << self ; attr_reader :#{assoc} ; end
+     #           @#{assoc} = find_many[:#{assoc}]
+     #         end
+     #       END
+     #     end
+     #     
+     #     # TODO : add in the belongs_to association in the hash 
+     #   end
+     #   
+     #   search_results
+     # end
      
      #grabs the has_many association on the model
      def hm_associations

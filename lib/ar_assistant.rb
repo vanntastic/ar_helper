@@ -5,7 +5,7 @@ module ArAssistant
     attrs_to_remove = [:id, :created_at, :updated_at, :created_on, :updated_on,
                        :persistence_token, :single_access_token, :perishable_token,
                        :last_request_at, :last_login_at,:current_login_ip, :last_login_ip, 
-                       :logged_in_timeout]
+                       :logged_in_timeout, :type]
   end
   
   

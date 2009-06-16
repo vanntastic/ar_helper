@@ -1,11 +1,19 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 describe "Ar Helper" do
+  include ArHelper::Sugar
   
   setup do
     create_schema
   end
-
+  
+  it "should search people" do
+    @results = Person.search("jack")
+    @results.should.be.instance_of Array
+  end
+  
+  # CONTINUE HERE add 3 more test cases for different search scenarios...
+  
   it "should get all people" do
     all_people = Person.find(:all)
     all(:people).should.equal all_people

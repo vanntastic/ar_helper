@@ -1,11 +1,14 @@
 module ArAssistant
   
   # common attributes which will not be subject to assignment
-  def attrs_to_remove
-    attrs_to_remove = [:id, :created_at, :updated_at, :created_on, :updated_on,
-                       :persistence_token, :single_access_token, :perishable_token,
-                       :last_request_at, :last_login_at,:current_login_ip, :last_login_ip, 
-                       :logged_in_timeout, :type]
+  def attrs_to_remove(extra_attrs=[])
+    attrs_to_remove =  [:id, :created_at, :updated_at, :created_on, :updated_on,
+                        :persistence_token, :single_access_token, :perishable_token,
+                        :last_request_at, :last_login_at,:current_login_ip, :last_login_ip, 
+                        :logged_in_timeout, :type, :crypted_password, :salt, :remember_token,
+                        :remember_token_expires_at]
+    attrs_to_remove.push(extra_attrs) unless extra_attrs.blank?
+    attrs_to_remove.map &:to_s
   end
   
   
@@ -17,10 +20,10 @@ module ArAssistant
     return hm.flatten
    end
    
-     def has_associations?; self.reflect_on_all_associations.blank?; end
+   def has_associations?; self.reflect_on_all_associations.blank?; end
    
-   def build_sql(conditions)
-    conditions = [conditions] if conditions.is_a? String
+   def build_conditions(conditions)
+    conditions = conditions.split(",") if conditions.is_a? String
     sql = ""
     conditions.each { |condition| sql << " AND #{condition}" }
     sql

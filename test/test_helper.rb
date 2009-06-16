@@ -11,7 +11,7 @@ db_config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
 ActiveRecord::Base.establish_connection db_config["ar_helper"]
 
 # Comment out to view AR schema statments
-# $stdout = StringIO.new
+$stdout = StringIO.new
 
 def create_schema
   ActiveRecord::Base.logger

@@ -12,7 +12,10 @@ describe "Ar Helper" do
     @results.should.be.instance_of Array
   end
   
-  # CONTINUE HERE add 3 more test cases for different search scenarios...
+  it "should search people with ordering" do
+    find_results = Person.find :all, :conditions => "name like '%jack'", :order => "email"
+    Person.search('jack',:order => "email").should.equal find_results
+  end
   
   it "should get all people" do
     all_people = Person.find(:all)

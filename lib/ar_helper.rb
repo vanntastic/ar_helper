@@ -25,9 +25,9 @@ module ArHelper
      def to_params(params_name=:params, options={})
        options[:remove] = options[:remove].nil? ? attrs_to_remove : attrs_to_remove(options[:remove])
        @@params_var = params_name.to_sym
-       p_hsh = {}
+       p_hsh = {} # => params hash
        self.columns.map {|a| p_hsh[a.name.to_sym]=generate_val(a)}
-       # convert it back to symbols since ar likes its column names using strings...
+       # convert it back to symbols since AR likes its column names using strings...
        options[:remove].map!(&:to_sym)
        options[:remove].each {|c| p_hsh.delete c}
        params = {@@params_var => p_hsh}  

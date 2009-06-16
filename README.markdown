@@ -73,8 +73,8 @@ Model#to_params generates a params hash of of filled in values for a model... th
 exceptionally useful when writing tests and you need to pass a params hash to 
 an action request, it also automatically removes common unwanted attributes that you might not
 want automatically this might be the case if you are using 
-[http://github.com/binarylogic/authlogic/tree/master](authlogic) or
-[http://github.com/technoweenie/restful-authentication/tree/master](restful_authentication) :
+[authlogic](http://github.com/binarylogic/authlogic/tree/master) or
+[restful_authentication](http://github.com/technoweenie/restful-authentication/tree/master) :
 
 OPTIONS:
 
@@ -105,7 +105,7 @@ EXAMPLES:
     
         User.create User.to_params.values
 
-    # Here's an example of a test suite with the [http://github.com/relevance/test-spec/tree/master](test/spec) and [http://github.com/pelargir/test_spec_on_rails/tree/master](test/spec/rails)
+Here's an example of a test suite with the [test/spec](http://github.com/relevance/test-spec/tree/master) and [test/spec/rails](http://github.com/pelargir/test_spec_on_rails/tree/master)
     
         require File.dirname(__FILE__) + '/../test_helper'
         specify "When you manage users, you" do
@@ -162,7 +162,7 @@ Model#search criteria, options={}
 
 Model#search searches a model using the LIKE operator. Please note that this is basically a wrapper 
 around Model#find(:all) with LIKE conditions, I built this simply because I needed a simple method
-to query my models without typing too much or worry about customization. If you have more advanced needs to search your models I highly recommend:  [http://github.com/binarylogic/searchlogic/tree/master](searchlogic). I actually revised this plugin because I was somewhat inspired by the elegance of the searchlogic plugin and for the fact that I could not simply do a simple search in searchlogic with OR operators easily enough.
+to query my models without typing too much or worry about customization. If you have more advanced needs to search your models I highly recommend:  [searchlogic](http://github.com/binarylogic/searchlogic/tree/master). I actually revised this plugin because I was somewhat inspired by the elegance of the searchlogic plugin and for the fact that I could not simply do a simple search in searchlogic with OR operators easily enough.
 
 OPTIONS:
 --------
@@ -186,7 +186,7 @@ EXAMPLES :
         #   :conditions => ["first_name LIKE ? OR last_name LIKE ?",
         #                   '%something%','%something%']
         
-    # change the modifier to and    
+    # change the modifier to AND    
     
         User.search "something", :modifier => :and
         # => User.find :all, 

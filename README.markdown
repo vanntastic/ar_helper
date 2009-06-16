@@ -167,14 +167,10 @@ to query my models without typing too much or worry about customization. If you 
 OPTIONS:
 --------
   
-  - columns : specify the columns(attributes) that you want to search through, this defaults
-              to all the columns (Model#column_names), multiple attributes are passed with a 
-              comma delimited list like "first_name, last_name" NOT "first_name", "last_name"
-  - conditions : allows you specify additional conditions, NOTE: this is not the same as the AR 
-                 conditions hash, you CANNOT pass in hash conditions ... (yet)
+  - columns : specify the columns(attributes) that you want to search through, this defaults to all the columns (Model#column_names), multiple attributes are passed with a comma delimited list like "first_name, last_name" NOT "first_name", "last_name"
+  - conditions : allows you specify additional conditions, NOTE: this is not the same as the AR conditions hash, you **CANNOT** pass in hash conditions ... (yet)
   - modifier : pass in either :or or :and, this defaults to :or
-  - remove : specify the columns(attributes) that you want to remove from the search, you can also
-             pass remove a comma delimited list of attributes
+  - remove : specify the columns(attributes) that you want to remove from the search, you can also pass remove a comma delimited list of attributes
 
 EXAMPLES :
 ----------

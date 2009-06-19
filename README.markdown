@@ -52,7 +52,8 @@ Example:
 Usage in script/console
 -----------------------
 
-If you want to use these methods in the console, simply copy and paste this into your .irbrc:
+If you want to use these methods in the console, simply copy and paste this into your .irbrc, I've been have issues using this with Rails > 2.3, will hopefully figure out 
+soon:
 
       # check to see if the ar_helper plugin is installed
       def ar_helper_exists?; File.exists?("vendor/plugins/ar_helper"); end
@@ -63,7 +64,7 @@ If you want to use these methods in the console, simply copy and paste this into
           puts "ArHelper::Sugar methods not loaded ... install ArHelper plugin
                 externally..." unless ArHelper.constants.include?("Sugar")
       end
-
+      
       require_and_load_ar_helper if ar_helper_exists?
 
 Model#to_params param_name, options={}

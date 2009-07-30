@@ -41,8 +41,8 @@ module ArHelper
          end
          
          # removes attrs from params hash
+         # EX: User.to_params.remove(:login, :email)
          def remove(*vals)
-          vals = [vals] unless vals.is_a?(Array)
           vals.each { |val| self[@@params_var].delete val }
           return self
          end

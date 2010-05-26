@@ -11,7 +11,21 @@ module ArHelper
   
   module ClassMethods
      include ArAssistant
-     # provides a params hash with generated data which will can useful for testing
+     
+     # Creates a factory to use with tests, can use the same special attributes as to_params, 
+     # defaults to using lazy attributes
+     # EX: 
+     # - jack = User.factory # => creates a factory named jack with lazy attributes
+     # - jack = User.factory :name => "jack" # => creates a factory named jack with the name of "jack"
+     # 
+     # NOTE: this is a simple basic implementation of the factory pattern it doesn't neccesarily
+     #       replace fixtures, for a true factory pattern implementation, use factory_girl
+     
+     def factory(attrs={})
+       self.create! to_params.merge(attrs).values
+     end
+     
+     # provides a params hash with generated data which can useful for testing
      # USAGE : 
      # Model.to_params :name_of_params_hash # => :name_of_params_hash (defaults to :params)
      #         to override the params hash, just pass a hash list of attributes :

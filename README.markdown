@@ -128,7 +128,7 @@ Here's an example of a test suite with the [test/spec](http://github.com/relevan
           end
         
         end
-
+        
 Chained methods
 ---------------
 Some chained methods have been provided to help to clean up and customize your params hash:
@@ -156,6 +156,25 @@ Returns the values of the hash without the :params parent hash
 Example:
 
     User.to_params.values
+    
+Model#factory attrs={}
+----------------------
+
+Simple implementation of the factory pattern, used to compliment fixtures.
+
+OPTIONS:
+
+    - attrs = a hash of attributes that you want to override
+
+EXAMPLES:
+
+    # generate a simple factory named jack
+
+        jack = User.factory
+
+    # generate a simple factory named jack with the name attribute as 'jack'
+
+        jack = User.factory :name => "jack"    
 
 
 Model#search criteria, options={}

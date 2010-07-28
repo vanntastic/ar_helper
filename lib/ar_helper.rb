@@ -22,7 +22,7 @@ module ArHelper
      #       replace fixtures, for a true factory pattern implementation, use factory_girl
      
      def factory(attrs={})
-       self.create! to_params.merge(attrs).values
+       factory = self.create! to_params.merge(attrs).values
      end
      
      # provides a params hash with generated data which can useful for testing

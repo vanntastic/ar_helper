@@ -14,7 +14,7 @@ ArHelper::Sugar
 
 ArHelper::Sugar adds some convenient abstraction methods to ActionView and
 ActionController, that makes querying a bit more pleasing and grammatically 
-correct (IMO). This looks beatiful with Dr Nic's map_by_method gem
+correct (IMO). This looks beautiful with Dr Nic's map_by_method gem
 for example instead of User.find(:all).map_by_name, you can do all(:users).map_by_name
 
 all :name_of_model, options={}
